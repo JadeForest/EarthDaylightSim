@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { getTime } from './setTime';
 
 /* ========================================================================== */
 /*                             Configs & Constants                            */
@@ -28,16 +29,14 @@ function getSunlightAngle(time) {
 /* ========================================================================== */
 /*                                 Scene Setup                                */
 /* ========================================================================== */
-let cameraDistance = DefaultCameraDistance;
-
 const scene = new THREE.Scene();
 const aspect = window.innerWidth / window.innerHeight;
 const camera = new THREE.OrthographicCamera(
-    -cameraDistance * aspect, cameraDistance * aspect,
-    cameraDistance, -cameraDistance,
+    -DefaultCameraDistance * aspect, DefaultCameraDistance * aspect,
+    DefaultCameraDistance, -DefaultCameraDistance,
     0, 1000
 );
-camera.position.z = cameraDistance;
+camera.position.z = DefaultCameraDistance;
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
@@ -102,6 +101,8 @@ root.add(pole);
 let isDragging = false;
 let dragStartX, dragStartY;
 let cameraTheta = PI / 2, cameraPhi = PI / 2;
+
+let cameraDistance = DefaultCameraDistance;
 
 function moveSphericCamera(deltaX, deltaY) {
     // Calculate new camera angle based on mouse movement
@@ -229,7 +230,7 @@ function handleKeyUp(event) {
             root.rotation.x = 0;
             break;
         case 'v': case 'V': // Align with ecliptic
-            root.rotation.x = getSunlightAngle(new Date());
+            root.rotation.x = getSunlightAngle(getTime());
             break;
         case 't': case 'T': // Toggle markers
             noonMarker.visible = !noonMarker.visible;
@@ -260,7 +261,7 @@ window.addEventListener('touchmove', handleTouchMove, false);
 /* ========================================================================== */
 // Adjust sphere rotation position y
 function updateEarthRotation() {
-    const now = new Date();
+    const now = getTime();
     const UTCMinutes = now.getUTCHours() * 60 + now.getUTCMinutes();
     earth.rotation.y = UTCMinutes * RadPerMinute + GMTOffset - PI / 2;
 }
@@ -268,10 +269,16 @@ updateEarthRotation();
 
 // Adjust rotation x of light source
 function updateSunlightAngle() {
-    const sunlightAngle = getSunlightAngle(new Date());
+    const sunlightAngle = getSunlightAngle(getTime());
     directionalLight.position.set(0, SunlightDistance * Math.tan(sunlightAngle), SunlightDistance)
 }
 updateSunlightAngle();
+
+// Signal from setTime button
+document.getElementById("set-time-btn").addEventListener("click", updateEarthRotation);
+document.getElementById("set-time-btn").addEventListener("click", updateSunlightAngle);
+document.getElementById("set-now-btn").addEventListener("click", updateEarthRotation);
+document.getElementById("set-now-btn").addEventListener("click", updateSunlightAngle);
 
 // Animation loop
 let lastEarthUpdate = 0;

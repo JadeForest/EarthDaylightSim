@@ -26,7 +26,7 @@
             bottom: 10px;
             width: 100%;
             text-align: center;
-            z-index: 100;
+            z-index: 50;
             display: block;
         }
 
@@ -36,6 +36,15 @@
             font-size: medium;
             margin-right: 10px;
         }
+
+        #set-time {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            width: 100%;
+            text-align: left;
+            z-index: 100;
+        }
     </style>
 </head>
 
@@ -44,7 +53,7 @@
         <span id="date">0000-00-00</span>
         <span id="clock">00:00:00</span>
         <span id="timezone">GMT+0000</span>
-    </div>
+        </div>
     <div id="control">
         <span class="desc">WASD/拖动: 移动相机</span>
         <span class="desc">Z & C: 相机距离</span>
@@ -55,9 +64,33 @@
         <span class="desc">T: 午时线</span>
         <span class="desc">G: 地轴</span>
     </div>
+    <div id="set-time">
+        <input type="text" id="datetime-input" placeholder="YYYY-MM-DD HH:MM">
+        <button id="set-time-btn">设置</button>
+        <button id="set-now-btn">现在</button>
+    </div>
 
     <script type="module" src="/main.js"></script>
     <script type="module" src="/time.js"></script>
+    <script type="module" src="/setTime.js"></script>
+    
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css">
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
+    
+    <script>
+        $(function () {
+            $('#datetime-input').datetimepicker({
+                minDateTime: '1900/01/01 00:00',
+                maxDateTime: '9999/12/31 23:59',
+                format: 'Y-m-d H:i'
+            });
+        });
+    </script>
 
 </body>
 

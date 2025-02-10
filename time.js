@@ -1,6 +1,8 @@
+import { getTime } from "./setTime";
+
 // Add current time to the div with id "clock"
 function updateClock() {
-    const now = new Date();
+    const now = getTime();
     const hours = now.getHours();
     const minutes = now.getMinutes();
     const seconds = now.getSeconds();
@@ -17,7 +19,7 @@ updateClock(); // Update the clock initially
 let lastDate;
 
 function updateDate() {
-    const now = new Date();
+    const now = getTime();
     const year = now.getFullYear();
     const month = now.getMonth();
     const day = now.getDate();
@@ -35,7 +37,7 @@ updateDate(); // Update the date initially
 /* -------------------------------------------------------------------------- */
 
 function updateTimezone() {
-    const now = new Date();
+    const now = getTime();
     const hrsOffset = now.getTimezoneOffset() / 60, minOffset = now.getTimezoneOffset() % 60;
     const timezone = "GMT" + (hrsOffset <= 0 ? "+" : "-") + Math.abs(hrsOffset).toString().padStart(2, "0") + minOffset.toString().padStart(2, "0");
     document.getElementById("timezone").innerHTML = timezone;
