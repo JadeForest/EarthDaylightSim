@@ -14,7 +14,7 @@ const MarkerWidth = 0.003;
 const PoleRadius = 0.0015;
 const SunlightDistance = 5;
 const SunlightIntensity = 4;
-const DefaultCameraDistance = 1.5;
+const DefaultCameraDistance = isMobileDevice() ? 2.5 : 1.5;
 
 /* ========================================================================== */
 /*                                    Utils                                   */
@@ -24,6 +24,16 @@ function getSunlightAngle(time) {
     const startOfYear = new Date(time.getFullYear(), 0, 0);
     const dayOfYear = Math.floor((time - startOfYear) / (1000 * 60 * 60 * 24));
     return Math.asin(0.398 * Math.cos(2 * PI * (dayOfYear - 173) / 365.242));
+}
+
+function isMobileDevice() {
+    const UA = navigator.userAgent;
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(UA);
+}
+
+if (isMobileDevice()) {
+    document.getElementById("control").remove();
+    document.getElementById("control-mobile").style.display = "";
 }
 
 /* ========================================================================== */
@@ -144,7 +154,7 @@ function handleMouseDown(event) {
 }
 
 function handleTouchStart(event) {
-    event.preventDefault();
+    // event.preventDefault();
     const touch = event.touches[0];
     handleMouseDown(touch);
 }
@@ -154,7 +164,7 @@ function handleMouseUp(event) {
 }
 
 function handleTouchEnd(event) {
-    event.preventDefault();
+    // event.preventDefault();
     handleMouseUp(event);
 }
 
@@ -279,6 +289,18 @@ document.getElementById("set-time-btn").addEventListener("click", updateEarthRot
 document.getElementById("set-time-btn").addEventListener("click", updateSunlightAngle);
 document.getElementById("set-now-btn").addEventListener("click", updateEarthRotation);
 document.getElementById("set-now-btn").addEventListener("click", updateSunlightAngle);
+
+// Signal from mobile zoom button
+document.getElementById("minus").addEventListener("click", () => {
+    cameraDistance *= 1.1;
+    cameraDistance = Math.min(cameraDistance, 10);
+    handleResize();
+})
+document.getElementById("plus").addEventListener("click", () => {
+    cameraDistance *= 0.9;
+    cameraDistance = Math.max(cameraDistance, 1);
+    handleResize();
+})
 
 // Animation loop
 let lastEarthUpdate = 0;

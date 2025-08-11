@@ -25,8 +25,17 @@
             position: absolute;
             bottom: 10px;
             width: 100%;
-            text-align: center;
+            text-align: left;
             z-index: 50;
+            display: block;
+        }
+
+        #control-mobile {
+            position: absolute;
+            bottom: 10px;
+            width: 40%;
+            text-align: left;
+            z-index: 100;
             display: block;
         }
 
@@ -40,10 +49,19 @@
         #set-time {
             position: absolute;
             bottom: 10px;
-            left: 10px;
+            right: 5px;
             width: 100%;
-            text-align: left;
+            text-align: right;
             z-index: 100;
+            display: block;
+        } 
+        
+        button {
+            height: 25px;
+        }
+
+        input {
+            height: 20px;
         }
     </style>
 </head>
@@ -53,27 +71,34 @@
         <span id="date">0000-00-00</span>
         <span id="clock">00:00:00</span>
         <span id="timezone">GMT+0000</span>
-        </div>
-    <div id="control">
-        <span class="desc">WASD/拖动: 移动相机</span>
-        <span class="desc">Z & C: 相机距离</span>
-        <span class="desc">R: 重置相机</span>
-        <span class="desc">Q & E: 倾斜</span>
-        <span class="desc">F: 赤道对齐</span>
-        <span class="desc">V: 黄道对齐</span>
-        <span class="desc">T: 午时线</span>
-        <span class="desc">G: 地轴</span>
     </div>
     <div id="set-time">
+        <span class="desc">Change Time: </span>
         <input type="text" id="datetime-input" placeholder="YYYY-MM-DD HH:MM">
-        <button id="set-time-btn">设置</button>
-        <button id="set-now-btn">现在</button>
+        <button id="set-time-btn">Set</button>
+        <button id="set-now-btn">Now</button>
+    </div>
+    <div id="control">
+        <span class="desc"> </span>
+        <span class="desc">WASD/Mouse: Spin</span>
+        <span class="desc">Z & C: Zoom</span>
+        <span class="desc">R: Reset Camera</span>
+        <span class="desc">Q & E: Tilt</span>
+        <span class="desc">F: Equator Align</span>
+        <span class="desc">V: Sunlight Align</span>
+        <span class="desc">T: Noon-Midnight</span>
+        <span class="desc">G: The Axis</span>
+    </div>
+    <div id="control-mobile" style="display: none; ">
+        <span class="desc"> Zooming:</span>
+        <button id="minus">-</button>
+        <button id="plus">+</button>
     </div>
 
     <script type="module" src="/main.js"></script>
     <script type="module" src="/time.js"></script>
     <script type="module" src="/setTime.js"></script>
-    
+
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
@@ -81,7 +106,7 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css">
     <script
         src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
-    
+
     <script>
         $(function () {
             $('#datetime-input').datetimepicker({
